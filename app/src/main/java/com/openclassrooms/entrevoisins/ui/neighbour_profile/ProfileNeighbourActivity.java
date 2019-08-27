@@ -11,9 +11,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
+import com.openclassrooms.entrevoisins.events.FavoriteNeighboursListChangeEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.FavoriteNeighboursManager;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +66,8 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
                     mFavoriteNeighboursManager.addToFavorite(mNeighbour);
                 }
                 setColorFavoriteButton();
+
+                EventBus.getDefault().postSticky(new FavoriteNeighboursListChangeEvent());
             }
         });
     }
