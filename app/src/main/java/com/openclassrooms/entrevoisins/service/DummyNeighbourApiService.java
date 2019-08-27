@@ -27,4 +27,18 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     public void deleteNeighbour(Neighbour neighbour) {
         neighbours.remove(neighbour);
     }
+
+    public Neighbour getNeighbour(int id){
+
+        Neighbour neighbour = null;
+
+        for (int i = 0; i < neighbours.size(); i++) {
+            Neighbour n = neighbours.get(i);
+            if(n.getId() == id) {
+                neighbour = n;
+            }
+        }
+
+        return neighbour;
+    }
 }
