@@ -50,8 +50,11 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
 
         //Insert neighbour data in layout
         ButterKnife.bind(this);
+
         mName.setText(mNeighbour.getName());
-        Glide.with(this).load(mNeighbour.getAvatarUrl()).into(mAvatar);
+
+        String bigAvatarUrl = mNeighbour.getAvatarUrl().replace("/150","/300");
+        Glide.with(this).load(bigAvatarUrl).into(mAvatar);
 
         //Favorite Button
         setColorFavoriteButton();
