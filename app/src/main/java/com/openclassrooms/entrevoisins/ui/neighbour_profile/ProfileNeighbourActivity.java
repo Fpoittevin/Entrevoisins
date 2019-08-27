@@ -33,7 +33,7 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
         mNeighbourApiService = DI.getNeighbourApiService();
 
         //Generate mNeighbour with id in Intent
-        int idNeighbour = getIntent().getIntExtra("id", 0);
+        int idNeighbour = getIntent().getIntExtra("idNeighbour", 0);
         mNeighbour = mNeighbourApiService.getNeighbour(idNeighbour);
 
         //Insert neighbour data in layout

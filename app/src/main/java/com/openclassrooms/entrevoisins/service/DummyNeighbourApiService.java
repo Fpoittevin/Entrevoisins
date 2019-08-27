@@ -36,6 +36,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
             Neighbour n = neighbours.get(i);
             if(n.getId() == id) {
                 neighbour = n;
+                break;
             }
         }
 
