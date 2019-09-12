@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.FavoriteNeighboursListChangeEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.FavoriteNeighboursManager;
+import com.openclassrooms.entrevoisins.service.FavoriteNeighboursStorage;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,6 +37,8 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
     TextView mName;
     @BindView(R.id.activity_profile_neighbour_favorite_btn)
     FloatingActionButton mFavoriteButton;
+    @BindView(R.id.activity_profile_neighbour_back_btn)
+    Button mBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,7 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_neighbour);
 
         mNeighbourApiService = DI.getNeighbourApiService();
-        mFavoriteNeighboursManager = new FavoriteNeighboursManager(this);
+        mFavoriteNeighboursManager = new FavoriteNeighboursManager(new FavoriteNeighboursStorage(this));
 
         //Generate mNeighbour with id in Intent
         int idNeighbour = getIntent().getIntExtra("idNeighbour", 0);
@@ -73,13 +77,20 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
                 EventBus.getDefault().postSticky(new FavoriteNeighboursListChangeEvent());
             }
         });
+
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileNeighbourActivity.this.finish();
+            }
+        });
     }
 
     private void setColorFavoriteButton() {
         neighbourIsFavorite = mFavoriteNeighboursManager.isFavorite(mNeighbour);
 
         if (neighbourIsFavorite) {
-            mFavoriteButton.setColorFilter(Color.YELLOW);
+            mFavoriteButton.setColorFilter(R.color.yellowStar);
         } else {
             mFavoriteButton.setColorFilter(Color.WHITE);
         }

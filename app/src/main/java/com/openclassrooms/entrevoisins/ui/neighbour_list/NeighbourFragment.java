@@ -16,6 +16,7 @@ import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
 import com.openclassrooms.entrevoisins.events.FavoriteNeighboursListChangeEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.FavoriteNeighboursManager;
+import com.openclassrooms.entrevoisins.service.FavoriteNeighboursStorage;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,25 +54,33 @@ public class NeighbourFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
-        mFavoriteNeighboursManager = new FavoriteNeighboursManager(getContext());
+        mFavoriteNeighboursManager = new FavoriteNeighboursManager(new FavoriteNeighboursStorage(getContext()));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_neighbour_list, container, false);
+        mPosition = getArguments().getInt("position");
+
+        View view;
+        if (mPosition == 0) {
+            view = inflater.inflate(R.layout.fragment_neighbour_list, container, false);
+        } else {
+            view = inflater.inflate(R.layout.fragment_favorite_neighbour_list, container, false);
+        }
+
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        mPosition = getArguments().getInt("position");
+
 
         initList();
         return view;
     }
 
     /**
-     * Init the List of neighbours
+     * Init the List of neighbours and the List of favorite neighbours
      */
     private void initList() {
         if (mPosition == 0) {
@@ -101,8 +110,9 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
-        mApiService.deleteNeighbour(event.neighbour);
+
         mFavoriteNeighboursManager.removeToFavorite(event.neighbour);
+        mApiService.deleteNeighbour(event.neighbour);
         initList();
     }
 

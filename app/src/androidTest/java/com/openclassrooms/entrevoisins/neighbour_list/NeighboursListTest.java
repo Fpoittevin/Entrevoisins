@@ -7,6 +7,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.openclassrooms.entrevoisins.R;
+import com.openclassrooms.entrevoisins.service.FavoriteNeighboursManager;
+import com.openclassrooms.entrevoisins.service.FavoriteNeighboursStorage;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.ListNeighbourActivity;
 import com.openclassrooms.entrevoisins.utils.DeleteViewAction;
 
@@ -16,10 +18,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.openclassrooms.entrevoisins.utils.RecyclerViewItemCountAssertion.withItemCount;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 
@@ -60,12 +67,32 @@ public class NeighboursListTest {
      */
     @Test
     public void myNeighboursList_deleteAction_shouldRemoveItem() {
-        // Given : We remove the element at position 2
         onView(ViewMatchers.withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT));
         // When perform a click on a delete icon
         onView(ViewMatchers.withId(R.id.list_neighbours))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()));
         // Then : the number of element is 11
         onView(ViewMatchers.withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT-1));
+    }
+
+    @Test
+    public void myNeighboursList_clickItemAction_shouldStartProfileActivity() {
+
+        onView(withId(R.id.list_neighbours)).perform(click());
+        onView(withId(R.id.activity_profile_neighbour_avatar_img)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void myNeighboursList_clickItemAction_shouldDisplayNeighbourNameInProfile(){
+
+        onView(withId(R.id.list_neighbours)).perform(click());
+        onView(withId(R.id.activity_profile_neighbour_name_txt)).check(matches(not(withText(""))));
+    }
+
+    @Test
+    public void myFavoriteNeighboursList_shouldOnlyDisplayFavoriteNeighbours(){
+
+        FavoriteNeighboursManager favoriteNeighboursManager = new FavoriteNeighboursManager( new FavoriteNeighboursStorage(mActivity));
+        onView(withId(R.id.list_favorite_neighbours)).check(withItemCount(favoriteNeighboursManager.getFavoriteNeighbours().size()));
     }
 }
