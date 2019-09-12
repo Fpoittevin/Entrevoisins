@@ -32,19 +32,21 @@ public class FavoriteNeighboursStorage {
 
         List<Neighbour> favoriteNeighbours = new ArrayList<>();
 
-        favoriteNeighboursIdsSerialized = favoriteNeighboursIdsSerialized.substring(1, favoriteNeighboursIdsSerialized.length()-1);
+        if(favoriteNeighboursIdsSerialized != null) {
+            favoriteNeighboursIdsSerialized = favoriteNeighboursIdsSerialized.substring(1, favoriteNeighboursIdsSerialized.length() - 1);
 
-        if(favoriteNeighboursIdsSerialized.length() != 0) {
+            if (favoriteNeighboursIdsSerialized.length() != 0) {
 
-            String[] ids = favoriteNeighboursIdsSerialized.split(",");
+                String[] ids = favoriteNeighboursIdsSerialized.split(",");
 
-            for (String s : ids) {
-                int id = Integer.parseInt(s.trim());
+                for (String s : ids) {
+                    int id = Integer.parseInt(s.trim());
 
-                NeighbourApiService neighbourApiService = DI.getNeighbourApiService();
-                Neighbour neighbour = neighbourApiService.getNeighbour(id);
+                    NeighbourApiService neighbourApiService = DI.getNeighbourApiService();
+                    Neighbour neighbour = neighbourApiService.getNeighbour(id);
 
-                favoriteNeighbours.add(neighbour);
+                    favoriteNeighbours.add(neighbour);
+                }
             }
         }
 
