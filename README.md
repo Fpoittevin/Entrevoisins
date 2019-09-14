@@ -1,3 +1,5 @@
-# OpenClassrooms
+# Entre Voisins
 
-Ce dépôt contient une mini-application pour le P3 du parcours **Grande École du Numérique**.
+## Installation
+
+* Clone or Download the project from https://github.com/Fpoittevin/Entrevoisins.git
