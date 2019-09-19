@@ -57,7 +57,8 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
 
         mName.setText(mNeighbour.getName());
 
-        String bigAvatarUrl = mNeighbour.getAvatarUrl().replace("/150","/300");
+        //String bigAvatarUrl = mNeighbour.getAvatarUrl().replace("/150","/300");
+        String bigAvatarUrl = mNeighbour.getAvatarUrl();
         Glide.with(this).load(bigAvatarUrl).into(mAvatar);
 
         //Favorite Button
