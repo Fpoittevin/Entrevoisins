@@ -16,6 +16,9 @@ public class Neighbour {
     /** Avatar */
     private String avatarUrl;
 
+    /** Favorite */
+    private boolean isFavorite;
+
     /**
      * Constructor
      * @param id
@@ -50,6 +53,12 @@ public class Neighbour {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public boolean isFavorite() { return isFavorite; }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     @Override
