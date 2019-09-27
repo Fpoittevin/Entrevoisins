@@ -7,8 +7,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.openclassrooms.entrevoisins.R;
-import com.openclassrooms.entrevoisins.service.FavoriteNeighboursManager;
-import com.openclassrooms.entrevoisins.service.FavoriteNeighboursStorage;
+import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.ListNeighbourActivity;
 import com.openclassrooms.entrevoisins.utils.DeleteViewAction;
 
@@ -92,7 +91,6 @@ public class NeighboursListTest {
     @Test
     public void myFavoriteNeighboursList_shouldOnlyDisplayFavoriteNeighbours(){
 
-        FavoriteNeighboursManager favoriteNeighboursManager = new FavoriteNeighboursManager( new FavoriteNeighboursStorage(mActivity));
-        onView(withId(R.id.list_favorite_neighbours)).check(withItemCount(favoriteNeighboursManager.getFavoriteNeighbours().size()));
+        onView(withId(R.id.list_favorite_neighbours)).check(withItemCount(DI.getNeighbourApiService().getFavorites().size()));
     }
 }

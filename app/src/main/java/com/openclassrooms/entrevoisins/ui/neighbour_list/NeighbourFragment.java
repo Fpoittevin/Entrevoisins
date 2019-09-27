@@ -13,10 +13,8 @@ import android.view.ViewGroup;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
-import com.openclassrooms.entrevoisins.events.FavoriteNeighboursListChangeEvent;
+import com.openclassrooms.entrevoisins.events.FavoriteNeighbourEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
-import com.openclassrooms.entrevoisins.service.FavoriteNeighboursManager;
-import com.openclassrooms.entrevoisins.service.FavoriteNeighboursStorage;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,7 +27,6 @@ import java.util.List;
 public class NeighbourFragment extends Fragment {
 
     private NeighbourApiService mApiService;
-    private FavoriteNeighboursManager mFavoriteNeighboursManager;
     private List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
     private int mPosition;
@@ -54,7 +51,6 @@ public class NeighbourFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
-        mFavoriteNeighboursManager = new FavoriteNeighboursManager(new FavoriteNeighboursStorage(getContext()));
     }
 
     @Override
@@ -86,7 +82,7 @@ public class NeighbourFragment extends Fragment {
         if (mPosition == 0) {
             mNeighbours = mApiService.getNeighbours();
         } else {
-            mNeighbours = mFavoriteNeighboursManager.getFavoriteNeighbours();
+            mNeighbours = mApiService.getFavorites();
         }
         mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(this.getContext(), mNeighbours));
     }
@@ -111,13 +107,12 @@ public class NeighbourFragment extends Fragment {
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
 
-        mFavoriteNeighboursManager.removeToFavorite(event.neighbour);
         mApiService.deleteNeighbour(event.neighbour);
         initList();
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public  void onEvent(FavoriteNeighboursListChangeEvent event){
+    public  void onEvent(FavoriteNeighbourEvent event){
         initList();
     }
 }

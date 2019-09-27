@@ -23,4 +23,8 @@ public interface NeighbourApiService {
     void deleteNeighbour(Neighbour neighbour);
 
     Neighbour getNeighbour(int id);
+
+    void changeFavoriteStatus(Neighbour neighbour);
+
+    List<Neighbour> getFavorites();
 }

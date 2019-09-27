@@ -12,10 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
-import com.openclassrooms.entrevoisins.events.FavoriteNeighboursListChangeEvent;
+import com.openclassrooms.entrevoisins.events.FavoriteNeighbourEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
-import com.openclassrooms.entrevoisins.service.FavoriteNeighboursManager;
-import com.openclassrooms.entrevoisins.service.FavoriteNeighboursStorage;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,14 +25,22 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
 
     private Neighbour mNeighbour;
     private NeighbourApiService mNeighbourApiService;
-    private FavoriteNeighboursManager mFavoriteNeighboursManager;
-    private boolean neighbourIsFavorite;
 
     //UI Components
     @BindView(R.id.activity_profile_neighbour_avatar_img)
     ImageView mAvatar;
     @BindView(R.id.activity_profile_neighbour_name_txt)
     TextView mName;
+    @BindView(R.id.activity_profile_neighbour_second_name_txt)
+    TextView mSecondName;
+    @BindView(R.id.activity_profile_neighbour_address_txt)
+    TextView mAddress;
+    @BindView(R.id.activity_profile_neighbour_phone_number_txt)
+    TextView mPhoneNumber;
+    @BindView(R.id.activity_profile_neighbour_facebook_account_txt)
+    TextView mFacebookAccount;
+    @BindView(R.id.activity_profile_neighbour_description_txt)
+    TextView mDescription;
     @BindView(R.id.activity_profile_neighbour_favorite_btn)
     FloatingActionButton mFavoriteButton;
     @BindView(R.id.activity_profile_neighbour_back_btn)
@@ -46,7 +52,6 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_neighbour);
 
         mNeighbourApiService = DI.getNeighbourApiService();
-        mFavoriteNeighboursManager = new FavoriteNeighboursManager(new FavoriteNeighboursStorage(this));
 
         //Generate mNeighbour with id in Intent
         int idNeighbour = getIntent().getIntExtra("idNeighbour", 0);
@@ -56,6 +61,11 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mName.setText(mNeighbour.getName());
+        mSecondName.setText(mNeighbour.getName());
+        mAddress.setText(mNeighbour.getAddress() + " à " + mNeighbour.getDistance() + "km");
+        mPhoneNumber.setText(mNeighbour.getPhoneNumber());
+        mFacebookAccount.setText(mNeighbour.getFacebookAccount());
+        mDescription.setText(mNeighbour.getDescription());
 
         //String bigAvatarUrl = mNeighbour.getAvatarUrl().replace("/150","/300");
         String bigAvatarUrl = mNeighbour.getAvatarUrl();
@@ -68,14 +78,8 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (neighbourIsFavorite) {
-                    mFavoriteNeighboursManager.removeToFavorite(mNeighbour);
-                } else {
-                    mFavoriteNeighboursManager.addToFavorite(mNeighbour);
-                }
+                EventBus.getDefault().postSticky(new FavoriteNeighbourEvent(mNeighbour));
                 setColorFavoriteButton();
-
-                EventBus.getDefault().postSticky(new FavoriteNeighboursListChangeEvent());
             }
         });
 
@@ -88,12 +92,11 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
     }
 
     private void setColorFavoriteButton() {
-        neighbourIsFavorite = mFavoriteNeighboursManager.isFavorite(mNeighbour);
 
-        if (neighbourIsFavorite) {
+        if (mNeighbour.isFavorite()) {
             mFavoriteButton.setColorFilter(Color.YELLOW);
         } else {
-            mFavoriteButton.setColorFilter(Color.WHITE);
+            mFavoriteButton.setColorFilter(R.color.lightGray);
         }
     }
 }
