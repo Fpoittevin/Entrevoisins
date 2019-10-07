@@ -153,6 +153,7 @@
         android:src="@drawable/ic_star_white_24dp"
         android:id="@+id/activity_profile_neighbour_favorite_btn"
         app:backgroundTint="@android:color/white"
+        android:tint="@android:color/darker_gray"
         app:borderWidth="0dp"
         app:layout_anchor="@id/activity_profile_neighbour_header"
         app:layout_anchorGravity="bottom|right|end"

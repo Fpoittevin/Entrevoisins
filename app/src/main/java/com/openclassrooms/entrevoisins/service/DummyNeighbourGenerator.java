@@ -22,7 +22,7 @@ public abstract class DummyNeighbourGenerator {
             new Neighbour(9, "Joseph", "http://i.pravatar.cc/150?u=a042581f4e29026704d", "Saint Pierre du Mont", 3, "+33 6 86 57 90 14", "www.facebook.fr/joseph", LOREM),
             new Neighbour(10, "Emma", "http://i.pravatar.cc/150?u=a042581f4e29026706d", "Saint Pierre du Mont", 4, "+33 6 86 57 90 15", "www.facebook.fr/emma", LOREM),
             new Neighbour(11, "Patrick", "http://i.pravatar.cc/150?u=a042581f4e29026702d", "Saint Pierre du Mont", 5, "+33 6 86 57 90 14", "www.facebook.fr/patrick", LOREM),
-            new Neighbour(12, "Ludovic", "http://i.pravatar.cc/150?u=a042581f3e39026702d", "Saint Pierre du Mont", 5, "+33 6 86 57 90 13", "www.facebook.fr/ludovic", LOREM)
+            new Neighbour(12, "Ludovic", "http://i.pravatar.cc/150?u=a042581f3e39026702d", "Saint Pierre du Mont", 5, "+33 6 86 57 90 13a", "www.facebook.fr/ludovic", LOREM)
     );
 
     static List<Neighbour> generateNeighbours() {

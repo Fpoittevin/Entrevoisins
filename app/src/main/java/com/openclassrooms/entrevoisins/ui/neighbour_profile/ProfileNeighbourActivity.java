@@ -96,7 +96,7 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
         if (mNeighbour.isFavorite()) {
             mFavoriteButton.setColorFilter(Color.YELLOW);
         } else {
-            mFavoriteButton.setColorFilter(R.color.lightGray);
+            mFavoriteButton.setColorFilter(Color.LTGRAY);
         }
     }
 }
